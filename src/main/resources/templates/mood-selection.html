@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Modum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    font-family:'DM Sans','Segoe UI',sans-serif;
+    background: #0d0520;
+    min-height:100vh;
+    color:white;
+}
+
+.hero{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    background:
+        linear-gradient(
+            160deg,
+            rgba(15,5,40,0.72) 0%,
+            rgba(80,20,100,0.45) 40%,
+            rgba(180,60,90,0.30) 70%,
+            rgba(20,5,50,0.65) 100%
+        ),
+        url('/images/hero/istanbul.png');
+    background-size:cover;
+    background-position:center top;
+    display:flex;
+    flex-direction:column;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 60px;
+    position:relative;
+    z-index:10;
+}
+
+.logo{
+    font-family:'Syne',sans-serif;
+    font-size:26px;
+    font-weight:900;
+    color:#c084fc;
+    text-decoration:none;
+    letter-spacing:-0.5px;
+}
+
+.menu{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:rgba(255,255,255,0.75);
+    padding:8px 18px;
+    border-radius:30px;
+    font-size:14px;
+    font-weight:500;
+    transition:.25s;
+}
+
+.menu a:hover{
+    color:white;
+    background:rgba(255,255,255,0.1);
+}
+
+.hero-body{
+    flex:1;
+    display:flex;
+    align-items:flex-end;
+    padding:0 70px 90px;
+}
+
+.hero-text h1{
+    font-family:'Syne',sans-serif;
+    font-size:72px;
+    line-height:1.05;
+    font-weight:900;
+    color:white;
+    margin-bottom:16px;
+}
+
+.hero-text h1 span{
+    color:#c084fc;
+}
+
+.hero-text p{
+    font-size:18px;
+    color:rgba(255,255,255,0.75);
+    max-width:520px;
+    line-height:1.6;
+    margin-bottom:28px;
+}
+
+.search-box{
+    position:relative;
+}
+
+.search-box::before{
+    content:"🔍";
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:16px;
+    pointer-events:none;
+}
+
+.search-box input{
+    width:420px;
+    height:58px;
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(14px);
+    padding:0 22px 0 44px;
+    color:white;
+    font-size:16px;
+    outline:none;
+    border:1px solid rgba(255,255,255,0.22);
+    font-family:'DM Sans',sans-serif;
+    transition:.25s;
+}
+
+.search-box input::placeholder{ color:rgba(255,255,255,0.5); }
+
+.search-box input:focus{
+    background:rgba(255,255,255,0.18);
+    border-color:rgba(192,132,252,0.5);
+}
+
+.main{
+    background: linear-gradient(180deg, #1a0535 0%, #0d0220 60%, #060110 100%);
+    padding:70px 60px 100px;
+}
+
+.container{
+    width:92%;
+    max-width:1400px;
+    margin:auto;
+}
+
+.section-header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.section-header h2{
+    font-family:'Syne',sans-serif;
+    font-size:36px;
+    font-weight:900;
+    color:white;
+    margin-bottom:8px;
+}
+
+.section-header p{
+    color:rgba(255,255,255,0.5);
+    font-size:16px;
+}
+
+.moods{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:80px;
+}
+
+.mood-card{
+    position:relative;
+    text-decoration:none;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(192,132,252,0.18);
+    padding:24px 12px 20px;
+    border-radius:22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    transition:.3s;
+    overflow:hidden;
+}
+
+.mood-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(192,132,252,0.5);
+    background:rgba(192,132,252,0.12);
+    box-shadow:0 0 30px rgba(168,85,247,0.25);
+}
+
+.icon{
+    font-size:48px;
+    margin-bottom:12px;
+    filter:drop-shadow(0 0 12px rgba(192,132,252,0.6));
+    transition:.3s;
+}
+
+.mood-card:hover .icon{
+    filter:drop-shadow(0 0 20px rgba(192,132,252,0.9));
+    transform:scale(1.1);
+}
+
+.name{
+    font-size:13px;
+    font-weight:600;
+    color:rgba(255,255,255,0.85);
+    line-height:1.3;
+}
+
+.district-section{ margin-bottom:80px; }
+
+.districts{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+
+.district-card{
+    position:relative;
+    height:200px;
+    overflow:hidden;
+    border-radius:20px;
+    text-decoration:none;
+    transition:.35s;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.district-card:hover{ transform:translateY(-8px); }
+
+.district-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.district-card:hover img{ transform:scale(1.06); }
+
+.district-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:20px;
+}
+
+.district-overlay h3{
+    color:white;
+    font-family:'Syne',sans-serif;
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.district-overlay p{
+    color:rgba(255,255,255,0.75);
+    font-size:13px;
+}
+
+.featured-section{ margin-bottom:60px; }
+
+.featured-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+
+.featured-card{
+    text-decoration:none;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.featured-card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(192,132,252,0.3);
+    box-shadow:0 20px 50px rgba(109,40,217,0.2);
+}
+
+.featured-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.featured-card:hover img{ transform:scale(1.04); }
+
+.featured-content{
+    padding:16px;
+}
+
+.featured-content h3{
+    font-family:'Syne',sans-serif;
+    font-size:18px;
+    color:white;
+    margin-bottom:4px;
+}
+
+.featured-content p{
+    color:rgba(255,255,255,0.5);
+    font-size:13px;
+}
+
+.footer{
+    text-align:center;
+    padding:40px 0 0;
+    color:rgba(255,255,255,0.3);
+    font-size:13px;
+}
+
+.istanbul-footer{
+    width:100%;
+    height:280px;
+    overflow:hidden;
+    position:relative;
+    margin-top:0;
+}
+
+.istanbul-footer img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    opacity:0.75;
+    filter:saturate(1.1) brightness(0.8);
+}
+
+.istanbul-footer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        #060110 0%,
+        rgba(6,1,16,0.85) 15%,
+        rgba(6,1,16,0.3) 30%,
+        transparent 50%
+    );
+    z-index:2;
+}
+
+.istanbul-footer::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        #060110 0%,
+        rgba(6,1,16,0.8) 10%,
+        transparent 30%
+    );
+    z-index:2;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="navbar">
+        <a class="logo" href="/moods">Modum ☕</a>
+        <div class="menu">
+            <a href="/moods">Ana Sayfa</a>
+            <a href="/about">Hakkımızda</a>
+        </div>
+    </div>
+
+    <div class="hero-body">
+        <div class="hero-text">
+            <h1>Bugün modun<br><span>nasıl?</span></h1>
+            <p>Modunu seç, sana en uygun mekanı bul. İstanbul'un en güzel kafeleri seni bekliyor.</p>
+            <form action="/search" method="get" class="search-box">
+                <input type="text" name="query" placeholder="Mekan ara...">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>Bugün Nasıl Hissediyorsun?</h2>
+            <p>Bir mod seç ve sana uygun mekanları keşfet.</p>
+        </div>
+
+        <div class="moods">
+            <a class="mood-card"
+               th:each="mood : ${moods}"
+               th:href="@{/mood/{id}(id=${mood.id})}">
+                <div class="icon" th:text="${mood.icon}"></div>
+                <div class="name" th:text="${mood.name}"></div>
+            </a>
+        </div>
+
+        <div class="district-section">
+            <div class="section-header">
+                <h2>Popüler Semtler</h2>
+            </div>
+            <div class="districts">
+                <!-- FIX: href="/district/..." olarak düzeltildi -->
+                <a href="/district/Kad%C4%B1k%C3%B6y" class="district-card">
+                    <img th:src="@{/images/districts/kadikoy.png}" src="/images/districts/kadikoy.png" alt="Kadıköy">
+                    <div class="district-overlay">
+                        <h3>Kadıköy</h3>
+                        <p>Kitap kafeler ve sakin köşeler</p>
+                    </div>
+                </a>
+                <a href="/district/Be%C5%9Fikta%C5%9F" class="district-card">
+                    <img th:src="@{/images/districts/besiktas.png}" src="/images/districts/besiktas.png" alt="Beşiktaş">
+                    <div class="district-overlay">
+                        <h3>Beşiktaş</h3>
+                        <p>Canlı ve öğrenci dostu ortamlar</p>
+                    </div>
+                </a>
+                <a href="/district/Karak%C3%B6y" class="district-card">
+                    <img th:src="@{/images/districts/karakoy.png}" src="/images/districts/karakoy.png" alt="Karaköy">
+                    <div class="district-overlay">
+                        <h3>Karaköy</h3>
+                        <p>Modern ve fotojenik kafeler</p>
+                    </div>
+                </a>
+                <a href="/district/%C3%9Csk%C3%BCdar" class="district-card">
+                    <img th:src="@{/images/districts/uskudar.png}" src="/images/districts/uskudar.png" alt="Üsküdar">
+                    <div class="district-overlay">
+                        <h3>Üsküdar</h3>
+                        <p>Boğaz manzaralı huzurlu mekanlar</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="featured-section">
+            <div class="section-header">
+                <h2>Öne Çıkan Mekanlar</h2>
+            </div>
+
+            <div class="featured-grid">
+                <a class="featured-card"
+                   th:each="place : ${featured}"
+                   th:href="@{/place/{id}(id=${place.id})}">
+                    <img th:src="${place.imageUrl}" th:alt="${place.name}">
+                    <div class="featured-content">
+                        <h3 th:text="${place.name}"></h3>
+                        <p th:text="${place.district}"></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">📍 Modum İstanbul ☕</div>
+
+    </div>
+</div>
+
+<!-- FIX: Istanbul footer - sadece görsel, tıklanabilir değil -->
+<div class="istanbul-footer">
+    <img th:src="@{/images/ist.png}" src="/images/ist.png" alt="İstanbul Silüeti">
+</div>
+
+</body>
+</html>

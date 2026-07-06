@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mekan Güncelle - Modum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    font-family:'DM Sans','Segoe UI',sans-serif;
+    background: linear-gradient(180deg, #3d0d6b 0%, #1a0535 25%, #0d0220 60%, #060110 100%);
+    min-height:100vh;
+    color:white;
+    padding:40px 60px 0;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.logo{
+    font-family:'Syne',sans-serif;
+    font-size:26px;
+    font-weight:900;
+    color:#c084fc;
+    text-decoration:none;
+}
+
+.menu a{
+    text-decoration:none;
+    color:rgba(255,255,255,0.55);
+    margin-left:25px;
+    font-weight:600;
+    font-size:14px;
+    transition:.2s;
+}
+.menu a:hover{ color:#c084fc; }
+
+.page-title{
+    font-family:'Syne',sans-serif;
+    font-size:38px;
+    font-weight:900;
+    color:white;
+    margin-bottom:6px;
+}
+
+.page-sub{
+    color:rgba(255,255,255,0.4);
+    font-size:16px;
+    margin-bottom:36px;
+}
+
+.form-card{
+    background:rgba(255,255,255,0.05);
+    max-width:780px;
+    border-radius:28px;
+    padding:40px;
+    border:1px solid rgba(192,132,252,0.2);
+}
+
+.form-group{ margin-bottom:22px; }
+
+.form-group label{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    color:rgba(255,255,255,0.7);
+    margin-bottom:8px;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    padding:13px 16px;
+    border-radius:14px;
+    border:1px solid rgba(192,132,252,0.2);
+    font-size:15px;
+    font-family:inherit;
+    color:white;
+    background:rgba(255,255,255,0.06);
+    transition:0.3s;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+    border-color:rgba(192,132,252,0.5);
+    background:rgba(255,255,255,0.09);
+}
+
+.form-group textarea{
+    height:110px;
+    resize:vertical;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.checkbox-group{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.checkbox-group input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    accent-color:#a855f7;
+}
+
+.checkbox-group label{
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+    color:rgba(255,255,255,0.7);
+}
+
+.checkboxes-row{
+    display:flex;
+    gap:32px;
+    margin-bottom:22px;
+}
+
+.divider{
+    border:none;
+    border-top:1px solid rgba(192,132,252,0.15);
+    margin:28px 0;
+}
+
+.btn-row{
+    display:flex;
+    gap:14px;
+    align-items:center;
+}
+
+.submit-btn{
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color:white;
+    border:none;
+    padding:14px 32px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 28px rgba(124,58,237,0.35);
+}
+
+.back-link{
+    color:#c084fc;
+    font-weight:700;
+    text-decoration:none;
+    font-size:15px;
+}
+
+.back-link:hover{ text-decoration:underline; }
+
+.istanbul-footer{
+    width:100%;
+    height:280px;
+    overflow:hidden;
+    position:relative;
+    margin-top:60px;
+}
+
+.istanbul-footer img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    opacity:0.85;
+    filter:saturate(1.1) brightness(0.85);
+}
+
+.istanbul-footer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, #060110 0%, rgba(6,1,16,0.5) 20%, transparent 50%);
+    z-index:2;
+}
+
+.istanbul-footer::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, #060110 0%, rgba(6,1,16,0.7) 8%, transparent 25%);
+    z-index:2;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <a class="logo" href="/moods">Modum ☕</a>
+    <div class="menu">
+        <a href="/moods">Ana Sayfa</a>
+        <a href="/admin">Admin Paneli</a>
+    </div>
+</div>
+
+<div class="page-title">✏️ Mekan Güncelle</div>
+<div class="page-sub" th:text="'Düzenleniyor: ' + ${place.name}"></div>
+
+<div class="form-card">
+    <form th:action="@{/admin/update}" th:object="${place}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group">
+            <label>Mekan Adı</label>
+            <input type="text" th:field="*{name}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Semt</label>
+                <input type="text" th:field="*{district}">
+            </div>
+            <div class="form-group">
+                <label>Puan (1.0 – 5.0)</label>
+                <input type="number" step="0.1" min="1" max="5" th:field="*{rating}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tam Adres</label>
+            <input type="text" th:field="*{address}">
+        </div>
+
+        <div class="form-group">
+            <label>Açıklama</label>
+            <textarea th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Görsel URL</label>
+            <input type="text" th:field="*{imageUrl}">
+        </div>
+
+        <hr class="divider">
+
+        <div class="checkboxes-row">
+            <div class="checkbox-group">
+                <input type="checkbox" th:field="*{wifi}" id="wifi">
+                <label for="wifi">📶 WiFi Var</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" th:field="*{socket}" id="socket">
+                <label for="socket">🔌 Priz Var</label>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="btn-row">
+            <button type="submit" class="submit-btn">Güncelle →</button>
+            <a class="back-link" href="/admin/edit">← Vazgeç</a>
+        </div>
+
+    </form>
+</div>
+
+<div class="istanbul-footer">
+    <img th:src="@{/images/ist.png}" alt="İstanbul Silüeti">
+</div>
+
+</body>
+</html>

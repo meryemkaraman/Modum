@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mekan Sil - Modum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    font-family:'DM Sans','Segoe UI',sans-serif;
+    background: linear-gradient(180deg, #3d0d6b 0%, #1a0535 25%, #0d0220 60%, #060110 100%);
+    min-height:100vh;
+    color:white;
+    padding:40px 60px 0;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.logo{
+    font-family:'Syne',sans-serif;
+    font-size:26px;
+    font-weight:900;
+    color:#c084fc;
+    text-decoration:none;
+}
+
+.menu a{
+    text-decoration:none;
+    color:rgba(255,255,255,0.55);
+    margin-left:25px;
+    font-weight:600;
+    font-size:14px;
+    transition:.2s;
+}
+.menu a:hover{ color:#c084fc; }
+
+.page-title{
+    font-family:'Syne',sans-serif;
+    font-size:38px;
+    font-weight:900;
+    color:white;
+    margin-bottom:6px;
+}
+
+.page-sub{
+    color:rgba(255,255,255,0.4);
+    font-size:16px;
+    margin-bottom:28px;
+}
+
+.warning-banner{
+    background:rgba(239,68,68,0.12);
+    border:1px solid rgba(239,68,68,0.3);
+    border-radius:16px;
+    padding:16px 20px;
+    color:rgba(255,150,150,0.95);
+    font-weight:700;
+    font-size:15px;
+    margin-bottom:28px;
+    max-width:860px;
+}
+
+.list-card{
+    background:rgba(255,255,255,0.05);
+    max-width:860px;
+    border-radius:28px;
+    padding:32px;
+    border:1px solid rgba(192,132,252,0.15);
+}
+
+.place-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+}
+
+.place-row:last-child{ border-bottom:none; }
+
+.place-info{ display:flex; flex-direction:column; gap:4px; }
+
+.place-name{
+    font-family:'Syne',sans-serif;
+    font-size:18px;
+    font-weight:800;
+    color:white;
+}
+
+.place-district{
+    font-size:14px;
+    color:rgba(255,255,255,0.45);
+}
+
+.place-rating{
+    font-size:14px;
+    color:#c084fc;
+    font-weight:700;
+}
+
+.delete-btn{
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color:white;
+    text-decoration:none;
+    padding:10px 22px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:14px;
+    transition:0.3s;
+    white-space:nowrap;
+    border:none;
+    cursor:pointer;
+    font-family:'DM Sans',sans-serif;
+}
+
+.delete-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(124,58,237,0.35);
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:rgba(255,255,255,0.3);
+    font-size:16px;
+}
+
+.back-link{
+    display:inline-block;
+    margin-top:28px;
+    color:#c084fc;
+    font-weight:700;
+    text-decoration:none;
+    font-size:15px;
+}
+.back-link:hover{ text-decoration:underline; }
+
+.istanbul-footer{
+    width:100%;
+    height:280px;
+    overflow:hidden;
+    position:relative;
+    margin-top:60px;
+    margin-left:-60px;
+    width: calc(100% + 120px);
+}
+
+.istanbul-footer img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    opacity:0.75;
+    filter:saturate(1.1) brightness(0.8);
+}
+
+.istanbul-footer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, #060110 0%, rgba(6,1,16,0.5) 20%, transparent 50%);
+    z-index:2;
+}
+
+.istanbul-footer::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, #060110 0%, rgba(6,1,16,0.7) 8%, transparent 25%);
+    z-index:2;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <a class="logo" href="/moods">Modum ☕</a>
+    <div class="menu">
+        <a href="/moods">Ana Sayfa</a>
+        <a href="/admin">Admin Paneli</a>
+    </div>
+</div>
+
+<div class="page-title">🗑️ Mekan Sil</div>
+<div class="page-sub">Silmek istediğin mekanı seç. Bu işlem geri alınamaz.</div>
+
+<div class="warning-banner">
+    ⚠️ Dikkat: Silinen mekanlar ve yorumları kalıcı olarak silinir.
+</div>
+
+<div class="list-card">
+
+    <div th:if="${#lists.isEmpty(places)}" class="empty">
+        Henüz mekan eklenmemiş.
+    </div>
+
+    <div class="place-row" th:each="place : ${places}">
+        <div class="place-info">
+            <div class="place-name" th:text="${place.name}"></div>
+            <div class="place-district">📍 <span th:text="${place.district}"></span></div>
+            <div class="place-rating">⭐ <span th:text="${place.rating}"></span></div>
+        </div>
+        <a class="delete-btn"
+           th:href="@{/admin/delete/{id}(id=${place.id})}"
+           onclick="return confirm('Bu mekanı silmek istediğine emin misin?')">
+            Sil 🗑️
+        </a>
+    </div>
+
+</div>
+
+<a class="back-link" href="/admin">← Admin Paneline Dön</a>
+
+<div class="istanbul-footer">
+    <img th:src="@{/images/ist.png}" alt="İstanbul Silüeti">
+</div>
+
+</body>
+</html>

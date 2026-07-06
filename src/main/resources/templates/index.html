@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Modum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    font-family:'DM Sans','Segoe UI',sans-serif;
+    background: linear-gradient(180deg, #1a0535 0%, #0d0220 60%, #060110 100%);
+    min-height:100vh;
+    color:white;
+    padding:28px 40px 60px;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:36px;
+}
+
+.logo{
+    font-family:'Syne',sans-serif;
+    font-size:24px;
+    font-weight:900;
+    color:#c084fc;
+    text-decoration:none;
+}
+
+.menu a{
+    text-decoration:none;
+    color:rgba(255,255,255,0.65);
+    margin-left:20px;
+    font-size:14px;
+    font-weight:500;
+    padding:7px 16px;
+    border-radius:30px;
+    transition:.25s;
+}
+
+.menu a:hover{
+    color:white;
+    background:rgba(255,255,255,0.08);
+}
+
+.page-header{
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.page-header h1{
+    font-family:'Syne',sans-serif;
+    font-size:32px;
+    font-weight:900;
+    color:white;
+    margin-bottom:6px;
+}
+
+.page-header p{
+    color:rgba(255,255,255,0.45);
+    font-size:15px;
+}
+
+.filters{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:32px;
+    flex-wrap:wrap;
+}
+
+.filter-btn{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(192,132,252,0.2);
+    color:rgba(255,255,255,0.6);
+    font-size:13px;
+    font-weight:500;
+    padding:8px 18px;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.25s;
+    font-family:'DM Sans',sans-serif;
+}
+
+.filter-btn:hover{
+    background:rgba(192,132,252,0.12);
+    border-color:rgba(192,132,252,0.4);
+    color:white;
+}
+
+.filter-btn.active{
+    background:rgba(192,132,252,0.2);
+    border-color:rgba(192,132,252,0.55);
+    color:#c084fc;
+}
+
+.places-grid{
+    max-width:1400px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:20px;
+}
+
+.place-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(192,132,252,0.15);
+    border-radius:20px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.place-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(192,132,252,0.4);
+    box-shadow:0 20px 50px rgba(109,40,217,0.2);
+}
+
+.place-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.place-card:hover .place-image{
+    transform:scale(1.04);
+}
+
+.card-body{
+    padding:16px;
+}
+
+.place-name{
+    font-family:'Syne',sans-serif;
+    font-size:18px;
+    font-weight:700;
+    color:white;
+    margin-bottom:4px;
+}
+
+.location{
+    color:rgba(255,255,255,0.45);
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.moods{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:10px;
+}
+
+.mood{
+    background:rgba(180,100,220,0.2);
+    border:1px solid rgba(180,100,220,0.3);
+    color:rgba(220,160,255,0.9);
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+}
+
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid rgba(255,255,255,0.07);
+}
+
+.rating{
+    color:#f5c518;
+    font-size:13px;
+    font-weight:600;
+}
+
+.features{
+    color:rgba(255,255,255,0.4);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.detail-btn{
+    display:inline-block;
+    text-decoration:none;
+    background:rgba(160,80,220,0.3);
+    border:1px solid rgba(160,80,220,0.5);
+    color:rgba(220,160,255,0.95);
+    padding:7px 14px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:12px;
+    transition:.25s;
+    white-space:nowrap;
+}
+
+.detail-btn:hover{
+    background:rgba(160,80,220,0.5);
+    transform:translateY(-2px);
+}
+
+.back-link{
+    display:inline-block;
+    margin-top:40px;
+    color:#c084fc;
+    font-weight:600;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.back-link:hover{ text-decoration:underline; }
+
+.empty{
+    text-align:center;
+    padding:60px;
+    color:rgba(255,255,255,0.3);
+    font-size:16px;
+    grid-column:1/-1;
+}.istanbul-footer{
+    width:100%;
+    height:280px;
+    margin-top:80px;
+    overflow:hidden;
+    position:relative;
+}
+
+.istanbul-footer img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    opacity:0.85;
+}
+
+/* Üst kısmı sayfanın arka planına yedir */
+.istanbul-footer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        #060110 0%,
+        rgba(6,1,16,0.85) 15%,
+        rgba(6,1,16,0.3) 30%,
+        transparent 50%
+    );
+    z-index:2;
+}
+
+/* Alt kısmı da yumuşat */
+.istanbul-footer::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        #060110 0%,
+        rgba(6,1,16,0.8) 10%,
+        transparent 30%
+    );
+    z-index:2;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <a class="logo" href="/moods">Modum 🌙</a>
+    <div class="menu">
+        <a href="/moods">Ana Sayfa</a>
+        <a href="/about">Hakkımızda</a>
+    </div>
+</div>
+
+<div class="page-header">
+    <h1>İstanbul'un en özel mekanları ✨</h1>
+    <p>Seçtiğin moda göre sana özel kafeler aşağıda.</p>
+</div>
+
+<div class="filters">
+    <button class="filter-btn active" onclick="filterCards('all', this)">Tümü</button>
+    <button class="filter-btn" onclick="filterCards('rating', this)">⭐ En Yüksek Puan</button>
+    <button class="filter-btn" onclick="filterCards('wifi', this)">📶 WiFi Var</button>
+    <button class="filter-btn" onclick="filterCards('socket', this)">🔌 Priz Var</button>
+</div>
+
+<div class="places-grid" id="placesGrid">
+    <div class="place-card"
+         th:each="place : ${places}"
+         th:data-rating="${place.rating}"
+         th:data-wifi="${place.wifi}"
+         th:data-socket="${place.socket}">
+
+        <img th:src="@{${place.imageUrl}}"
+             class="place-image"
+             alt="Mekan Fotoğrafı">
+
+        <div class="card-body">
+            <div class="place-name" th:text="${place.name}"></div>
+            <div class="location">📍 <span th:text="${place.district}"></span></div>
+
+            <div class="moods">
+                <span class="mood" th:each="mood : ${place.moods}">
+                    <span th:text="${mood.icon}"></span>
+                    <span th:text="${mood.name}"></span>
+                </span>
+            </div>
+
+            <div class="card-footer">
+                <div>
+                    <div class="rating">⭐ <span th:text="${place.rating}"></span></div>
+                    <div class="features">
+                        📶 <span th:text="${place.wifi ? 'Var' : 'Yok'}"></span>
+                        &nbsp;·&nbsp;
+                        🔌 <span th:text="${place.socket ? 'Var' : 'Yok'}"></span>
+                    </div>
+                </div>
+                <a class="detail-btn"
+                   th:href="@{/place/{id}(id=${place.id})}">
+                    Detayları Gör →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="back-link" href="/moods">← Modlara Dön</a>
+
+<script>
+function filterCards(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.place-card');
+    const arr = Array.from(cards);
+
+    if(type === 'wifi') {
+        arr.forEach(c => {
+            c.style.display = c.dataset.wifi === 'true' ? '' : 'none';
+        });
+    } else if(type === 'socket') {
+        arr.forEach(c => {
+            c.style.display = c.dataset.socket === 'true' ? '' : 'none';
+        });
+    } else if(type === 'rating') {
+        arr.forEach(c => c.style.display = '');
+        const grid = document.getElementById('placesGrid');
+        arr.sort((a,b) => parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating));
+        arr.forEach(c => grid.appendChild(c));
+    } else {
+        arr.forEach(c => c.style.display = '');
+    }
+}
+</script>
+<div class="istanbul-footer">
+    <img th:src="@{/images/ist.png}" alt="İstanbul Silüeti">
+</div>
+</body>
+</html>

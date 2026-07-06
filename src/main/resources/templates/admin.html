@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Admin Paneli - Modum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    font-family:'DM Sans','Segoe UI',sans-serif;
+    background: linear-gradient(180deg, #3d0d6b 0%, #1a0535 25%, #0d0220 60%, #060110 100%);
+    min-height:100vh;
+    color:white;
+    padding:40px 60px 0;
+}
+
+.admin-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:60px;
+}
+
+.admin-logo{
+    font-family:'Syne',sans-serif;
+    font-size:26px;
+    font-weight:900;
+    color:#c084fc;
+    letter-spacing:-0.5px;
+    text-decoration:none;
+}
+
+.admin-badge{
+    background:rgba(192,132,252,0.15);
+    border:1px solid rgba(192,132,252,0.3);
+    color:#c084fc;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.site-link{
+    color:rgba(255,255,255,0.5);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s;
+}
+.site-link:hover{ color:#c084fc; }
+
+.page-title{
+    font-family:'Syne',sans-serif;
+    font-size:48px;
+    font-weight:900;
+    margin-bottom:8px;
+    background: linear-gradient(135deg, #a855f7, #c084fc);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.page-sub{
+    color:rgba(255,255,255,0.4);
+    font-size:16px;
+    margin-bottom:50px;
+}
+
+.cards-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap:24px;
+    max-width:960px;
+}
+
+.admin-card{
+    background:rgba(255,255,255,0.05);
+    border-radius:24px;
+    padding:34px;
+    border:1px solid rgba(192,132,252,0.15);
+    text-decoration:none;
+    color:inherit;
+    transition:0.3s;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.admin-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(192,132,252,0.5);
+    background:rgba(192,132,252,0.08);
+    box-shadow:0 20px 48px rgba(124,58,237,0.20);
+}
+
+.card-icon{ font-size:40px; }
+
+.card-title{
+    font-family:'Syne',sans-serif;
+    font-size:22px;
+    font-weight:800;
+    color:white;
+}
+
+.card-desc{
+    color:rgba(255,255,255,0.45);
+    font-size:15px;
+    line-height:1.6;
+}
+
+.card-action{
+    display:inline-block;
+    margin-top:10px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color:white;
+    padding:10px 20px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:14px;
+    width:fit-content;
+}
+
+/* Sil kartı için kırmızı değil mor — tutarlı tema */
+.card-action.danger{
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+.footer{
+    margin-top:80px;
+    color:rgba(255,255,255,0.15);
+    font-size:14px;
+    padding-bottom:20px;
+}
+
+.istanbul-footer{
+    width:100%;
+    height:280px;
+    overflow:hidden;
+    position:relative;
+    margin-top:60px;
+    margin-left:-60px;
+    width: calc(100% + 120px);
+}
+
+.istanbul-footer img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    opacity:0.75;
+    filter:saturate(1.1) brightness(0.8);
+}
+
+.istanbul-footer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, #060110 0%, rgba(6,1,16,0.5) 20%, transparent 50%);
+    z-index:2;
+}
+
+.istanbul-footer::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, #060110 0%, rgba(6,1,16,0.7) 8%, transparent 25%);
+    z-index:2;
+}
+</style>
+</head>
+<body>
+
+<div class="admin-header">
+    <a class="admin-logo" href="/moods">⚡ Modum Admin</a>
+    <div style="display:flex; gap:20px; align-items:center;">
+        <span class="admin-badge">Yönetici Paneli</span>
+        <a class="site-link" href="/moods">← Siteye Dön</a>
+    </div>
+</div>
+
+<div class="page-title">Kontrol Paneli</div>
+<div class="page-sub">Mekan yönetimi için bir işlem seç.</div>
+
+<div class="cards-grid">
+
+    <a class="admin-card" href="/admin/add">
+        <div class="card-icon">➕</div>
+        <div class="card-title">Mekan Ekle</div>
+        <div class="card-desc">Yeni bir kafe veya mekan ekle. Fotoğraf, açıklama ve mod bilgilerini gir.</div>
+        <span class="card-action">Ekle →</span>
+    </a>
+
+    <a class="admin-card" href="/admin/edit">
+        <div class="card-icon">✏️</div>
+        <div class="card-title">Mekan Düzenle</div>
+        <div class="card-desc">Mevcut mekanların bilgilerini güncelle. İsim, adres, puan değişiklikleri yap.</div>
+        <span class="card-action">Düzenle →</span>
+    </a>
+
+    <a class="admin-card" href="/admin/delete">
+        <div class="card-icon">🗑️</div>
+        <div class="card-title">Mekan Sil</div>
+        <div class="card-desc">Sistemden kaldırmak istediğin mekanları seç ve sil.</div>
+        <span class="card-action danger">Sil →</span>
+    </a>
+
+</div>
+
+<div class="footer">Modum © 2025</div>
+
+<div class="istanbul-footer">
+    <img th:src="@{/images/ist.png}" alt="İstanbul Silüeti">
+</div>
+
+</body>
+</html>
