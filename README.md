@@ -88,11 +88,6 @@ git clone https://github.com/meryemkaraman/Modum.git
 
 Ardından `application.properties` dosyasında veritabanı bağlantısını düzenleyerek uygulamayı çalıştırabilirsiniz.
 
----
-
-# 📸 Uygulama Görselleri
-
-> Aşağıdaki bölüme uygulamaya ait ekran görüntüleri eklenecektir.
 
 ---
 
